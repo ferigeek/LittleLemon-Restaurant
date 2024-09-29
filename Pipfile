@@ -8,6 +8,8 @@ django = "*"
 djangorestframework = "*"
 mysqlclient = "*"
 djangorestframework-xml = "*"
+requests = "*"
+pillow = "*"
 
 [dev-packages]
 

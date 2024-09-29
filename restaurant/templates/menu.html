@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block mainSec %}
+<main style="margin: 5%;">
+    <div class="row">
+        {% for item in menu_items %}
+            <div class="col-lg-4">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ item.Image }}" class="card-img-top" alt="{{ item.Title }}">
+                    <div class="card-body">
+                        <p class="card-text">{{ item.Title }}<br>Price: {{ item.Price }}</p>
+                        {% if item.Inventory %}
+                            <p class="card-text" style="color: green;">Available</p>
+                        {% else %}
+                            <p class="card-text" style="color: red;">Out of stock</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div> 
+</main>
+{% endblock mainSec %}
