@@ -31,6 +31,30 @@
           </li>
         </ul>
       </div>
+
+      {% if loggedIn %}
+        <div class="collapse navbar-collapse justify-content-end">
+          <ul class="nav justify-content-end">
+              <li class="nav-item">
+                <button class="btn btn-outline-success me-2" type="button">Welcome, {{ user_name }}!</button>
+              </li>
+              <li class="nav-item">
+                <a href="{{ host }}/logout/"><button class="btn btn-outline-success me-2" type="button">Logout</button></a>
+              </li>
+          </ul>
+        </div>
+      {% else %}
+        <div class="collapse navbar-collapse justify-content-end">
+          <ul class="nav justify-content-end">
+              <li class="nav-item">
+                <a href="{{ host }}/login/"><button class="btn btn-outline-success me-2" type="button">Login</button></a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ host }}/sign-up/"><button class="btn btn-outline-success me-2" type="button">Sign Up</button></a>
+              </li>
+          </ul>
+        </div>
+      {% endif %}
     </div>
   </nav>
   <!-- End of Navigation bar section -->
