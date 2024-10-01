@@ -1,37 +1,44 @@
 {% extends "base.html" %}
 {% block mainSec %}
-<main>
-    <div class="container" style="padding: 5%;">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <form method="post">
-                    {% csrf_token %}
-                    {% for field in form %}
-                        <div class="form-group" style="margin: 1%; padding: 1%;">
-                            {{ field }}
-                            {% if field.help_text %}
-                                <small class="form-text text-muted">{{ field.help_text|safe }}</small>
-                            {% endif %}
-                            {% for error in field.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ error }}
+    {% if loggedIn %}
+        <main>
+            <div class="container" style="padding: 5%;">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <form method="post">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="form-group" style="margin: 1%; padding: 1%;">
+                                    {{ field }}
+                                    {% if field.help_text %}
+                                        <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+                                    {% endif %}
+                                    {% for error in field.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             {% endfor %}
-                        </div>
-                    {% endfor %}
-    
-                    <button type="submit" class="btn btn-primary" style="margin: 5px;">Submit</button>
-                </form>
+            
+                            <button type="submit" class="btn btn-primary" style="margin: 5px;">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                {% if alert == 1 %}
+                    <div class="alert alert-success" role="alert">
+                        Reservation created successfully!
+                    </div>
+                {% endif %}
             </div>
-        </div>
-    </div>
-    
-    <br>
-    
-    {% if alert == 1 %}
-    <div class="alert alert-success" role="alert">
-        Reservation created successfully!
-    </div>
+        </main>
+    {% else %}
+        <main style="margin: 12%;">
+            <div class="alert alert-warning" role="alert">
+                You have to login before booking.
+            </div>
+            <button type="button" class="btn btn-secondary btn-lg">Login</button>
+            <button type="button" class="btn btn-secondary btn-lg">Sign up</button>
+        </main>
     {% endif %}
-</main>
 {% endblock mainSec %}

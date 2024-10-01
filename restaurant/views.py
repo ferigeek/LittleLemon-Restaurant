@@ -11,6 +11,12 @@ def home(request):
     })
 
 def booking(request):
+    if not request.user.is_authenticated:
+        return render(request, 'book.html', { 
+        'page_title': 'Booking', 
+        'host': f'{request.scheme}://{request.get_host()}',
+        'loggedIn': False,
+    })
     form = forms.BookingForm()
     alert = 0
     if request.method == 'POST':
@@ -23,6 +29,7 @@ def booking(request):
         'page_title': 'Booking', 
         'host': f'{request.scheme}://{request.get_host()}',
         'alert': alert,
+        'loggedIn': True,
     })
 
 def menu(request):
