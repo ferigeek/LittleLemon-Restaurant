@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block mainSec %}
-    {% if loggedIn %}
+    {% if user.is_authenticated %}
         <main>
             <div class="container" style="padding: 5%;">
                 <div class="row justify-content-center">
