@@ -18,7 +18,9 @@ def booking(request):
     if request.method == 'POST':
         form = forms.BookingForm(request.POST)
         if form.is_valid():
-            form.save()
+            book = form.save(commit=False)
+            book.user = request.user
+            book.save()
             alert = 1
     return render(request, 'book.html', {
         'form': form, 
