@@ -7,29 +7,12 @@ from restaurantAPI import forms
 # Create your views here.
 
 def home(request):
-    if request.user.is_authenticated:
-        loggedIn = True
-        return render(request, 'home.html', {
-        'page_title': 'Home', 
-        'host': f'{request.scheme}://{request.get_host()}',
-        'loggedIn': loggedIn,
-        'user_name': request.user.username,
-    })
-    
-    loggedIn = False
     return render(request, 'home.html', {
         'page_title': 'Home', 
         'host': f'{request.scheme}://{request.get_host()}',
-        'loggedIn': loggedIn,
     })
 
 def booking(request):
-    if not request.user.is_authenticated:
-        return render(request, 'book.html', { 
-        'page_title': 'Booking', 
-        'host': f'{request.scheme}://{request.get_host()}',
-        'loggedIn': False,
-    })
     form = forms.BookingForm()
     alert = 0
     if request.method == 'POST':
@@ -42,14 +25,9 @@ def booking(request):
         'page_title': 'Booking', 
         'host': f'{request.scheme}://{request.get_host()}',
         'alert': alert,
-        'loggedIn': True,
-        'user_name': request.user.username,
     })
 
 def menu(request):
-    loggedIn = False
-    if request.user.is_authenticated:
-        loggedIn = True
     menu = requests.get(f'{request.scheme}://{request.get_host()}/api/menu')
     if menu.status_code == 200:
         data = menu.json()
@@ -57,8 +35,6 @@ def menu(request):
         'page_title': 'Menu',
         'host': f'{request.scheme}://{request.get_host()}',
         'menu_items': data,
-        'loggedIn': loggedIn,
-        'user_name': request.user.username,
     })
     else:
         data = {}
@@ -82,7 +58,6 @@ def signUp(request):
         'form': form, 
         'page_title': 'Sign up', 
         'host': f'{request.scheme}://{request.get_host()}',
-        'loggedIn': False,
     })
 
 def login_view(request):
@@ -99,7 +74,6 @@ def login_view(request):
         'form': form, 
         'page_title': 'Login', 
         'host': f'{request.scheme}://{request.get_host()}',
-        'loggedIn': False,
     })
 
 def logout_view(request):

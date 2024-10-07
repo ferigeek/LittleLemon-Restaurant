@@ -18,51 +18,44 @@
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{ host }}/home">Home</a>
+            <a class="nav-link {% if request.path == '/home/' %}active" aria-current="page"{% else %}"{% endif %} href="{{ host }}/home">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ host }}/book">Book</a>
+            <a class="nav-link {% if request.path == '/book/' %}active" aria-current="page"{% else %}"{% endif %} href="{{ host }}/book">Book</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ host }}/menu">Menu</a>
+            <a class="nav-link {% if request.path == '/menu/' %}active" aria-current="page"{% else %}"{% endif %} href="{{ host }}/menu">Menu</a>
           </li>
         </ul>
-      </div>
 
-      {% if loggedIn %}
-        <div class="collapse navbar-collapse justify-content-end">
-          <ul class="nav justify-content-end">
-              <li class="nav-item">
-                <button class="btn btn-outline-success me-2" type="button">Welcome, {{ user_name }}!</button>
-              </li>
-              <li class="nav-item">
-                <a href="{{ host }}/logout/"><button class="btn btn-outline-success me-2" type="button">Logout</button></a>
-              </li>
-          </ul>
-        </div>
-      {% else %}
-        <div class="collapse navbar-collapse justify-content-end">
-          <ul class="nav justify-content-end">
-              <li class="nav-item">
-                <a href="{{ host }}/login/"><button class="btn btn-outline-success me-2" type="button">Login</button></a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ host }}/sign-up/"><button class="btn btn-outline-success me-2" type="button">Sign Up</button></a>
-              </li>
-          </ul>
-        </div>
-      {% endif %}
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+              <button class="btn btn-outline-success me-2" type="button">Welcome, {{ user.username }}!</button>
+            </li>
+            <li class="nav-item">
+              <a href="{{ host }}/logout/"><button class="btn btn-outline-success me-2" type="button">Logout</button></a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a href="{{ host }}/login/"><button class="btn btn-outline-success me-2" type="button">Login</button></a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ host }}/sign-up/"><button class="btn btn-outline-success me-2" type="button">Sign Up</button></a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
     </div>
   </nav>
   <!-- End of Navigation bar section -->
 
   <!-- Main section -->
-
   {% block mainSec %}{% endblock mainSec %}
-
   <!-- End of the Main section -->
 
   <!-- Footer section -->
