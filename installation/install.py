@@ -55,6 +55,9 @@ try:
         if line.strip().startswith("DEBUG = True"):
             content[i] = "DEBUG = False\n"
             break
+        elif line.strip().startswith("ALLOWED_HOSTS"):
+            content[i] = f"ALLOWED_HOSTS = [{domain}]"
+            break
 
     security_settings = [
         'CSRF_COOKIE_SECURE = True\n',
