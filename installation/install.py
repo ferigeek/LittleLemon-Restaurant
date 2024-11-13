@@ -7,14 +7,14 @@ from pathlib import Path
 try:
     # requirements installation
     subprocess.run("sudo apt update && sudo apt upgrade -y", shell=True)
-    subprocess.run("sudo apt install libapache2-mod-wsgi-py3", shell=True)
-    subprocess.run("sudo apt install python3-dev", shell=True)
-    subprocess.run("sudo apt install build-essential", shell=True)
-    subprocess.run("sudo apt install libmysqlclient-dev", shell=True)
-    subprocess.run("sudo apt install pkg-config", shell=True)
-    subprocess.run("sudo apt install apache2", shell=True)
-    subprocess.run("sudo apt install mysql-server", shell=True)
-    subprocess.run("sudo apt install python3-venv", shell=True)
+    subprocess.run("sudo apt install libapache2-mod-wsgi-py3 -y", shell=True)
+    subprocess.run("sudo apt install python3-dev -y", shell=True)
+    subprocess.run("sudo apt install build-essential -y", shell=True)
+    subprocess.run("sudo apt install libmysqlclient-dev -y", shell=True)
+    subprocess.run("sudo apt install pkg-config -y", shell=True)
+    subprocess.run("sudo apt install apache2 -y", shell=True)
+    subprocess.run("sudo apt install mysql-server -y", shell=True)
+    subprocess.run("sudo apt install python3-venv -y", shell=True)
     
     # Domain
     domain = input("Enter the domain address of you application: ")
