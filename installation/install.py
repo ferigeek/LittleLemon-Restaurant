@@ -22,7 +22,7 @@ try:
     
     # Virtual environment creation
     subprocess.run("cd .. && python3 -m venv env", shell=True)
-    subprocess.run("source ../env/bin/activate && pip install -r ../req.txt", shell=True)
+    subprocess.run("bash -c \"source ../env/bin/activate && pip install -r ../req.txt\"", shell=True)
 
     # Apache Configuration
     print("Creating apache config ...")
