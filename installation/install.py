@@ -21,7 +21,8 @@ try:
     alias = input("Enter the alias for your domain (Just press enter if you don't want any): ")
     
     # Virtual environment creation
-    subprocess.run("cd .. && python3 -m venv env && source ./env/bin/activate && pip install -r req.txt", shell=True)
+    subprocess.run("cd .. && python3 -m venv env", shell=True)
+    subprocess.run("source ../env/bin/activate && pip install -r ../req.txt", shell=True)
 
     # Apache Configuration
     print("Creating apache config ...")
@@ -42,11 +43,11 @@ try:
         conf.write(f"\nAlias /media {Path.cwd().parent}/media")
         conf.write(f"<Directory {Path.cwd().parent}/media>\n\t\tRequire all granted\n\t</Directory>")
         r_domain = str()
-        for i in range(len(alias), -1, -1):
-            if alias[i] == '.':
-                r_alias = alias[:i] + '\\' + alias[i:]
+        for i in range(len(domain), -1, -1):
+            if domain[i] == '.':
+                r_domain = domain[:i] + '\\' + domain[i:]
                 break
-        conf.write("RewriteEngine On\n" + r"RewriteCond %{HTTP_HOST} ^" + r_alias + " [NC]")
+        conf.write("RewriteEngine On\n" + r"RewriteCond %{HTTP_HOST} ^" + r_domain + " [NC]")
         conf.write(r"RewriteRule ^(.*)$ https://" + domain + r"/$1 [L,R=301]")
         conf.write(r"\nErrorLog ${APACHE_LOG_DIR}/error-littlelemon.log")
         conf.wrtie(r"CustomLog ${APACHE_LOG_DIR}/access-littlelemon.log combined")
