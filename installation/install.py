@@ -93,6 +93,7 @@ try:
     subprocess.run(f"sudo chmod o+x {Path.cwd().parent.parent.parent}", shell=True)
     subprocess.run(f"sudo chmod o+x {Path.cwd().parent.parent}", shell=True)
 
+    subprocess.run("sudo a2enmod wsgi", shell=True)
     subprocess.run("sudo a2ensite littlelemon.conf", shell=True) 
     subprocess.run("sudo systemctl restart apache2", shell=True)
 
