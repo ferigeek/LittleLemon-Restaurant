@@ -87,11 +87,6 @@ try:
         env.write("DATABASE_PORT=3306"+'\n')
         env.write("SECRET_KEY="+secret_key+'\n')
     
-    # authorization
-    subprocess.run(f"sudo chown -R www-data:www-data {Path.cwd().parent}", shell=True)
-    subprocess.run(f"sudo chmod -R 755 {Path.cwd().parent}", shell=True)
-    subprocess.run(f"sudo chmod o+x {Path.cwd().parent.parent.parent}", shell=True)
-    subprocess.run(f"sudo chmod o+x {Path.cwd().parent.parent}", shell=True)
 
     subprocess.run("sudo a2enmod wsgi", shell=True)
     subprocess.run("sudo a2ensite littlelemon.conf", shell=True) 
@@ -113,7 +108,13 @@ try:
 
     subprocess.run(f"mysql -u root -p -e \"{mysql_commands}\"", shell=True)
 
-    subprocess.run("sudo a2ensite littlelemon.conf", shell=True)
+    subprocess.run("python3 ../manage.py collectstatic", shell=True)
+
+    # authorization
+    subprocess.run(f"sudo chown -R www-data:www-data {Path.cwd().parent}", shell=True)
+    subprocess.run(f"sudo chmod -R 755 {Path.cwd().parent}", shell=True)
+    subprocess.run(f"sudo chmod o+x {Path.cwd().parent.parent.parent}", shell=True)
+    subprocess.run(f"sudo chmod o+x {Path.cwd().parent.parent}", shell=True)
     subprocess.run("sudo systemctl restart apache2", shell=True)
 
     print("Done!")
