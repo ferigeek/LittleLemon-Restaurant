@@ -4,7 +4,7 @@ import datetime
 from pathlib import Path
 
 def command_exe(command, file):
-    output = subprocess.run(command, capture_output=True)
+    output = subprocess.run(command, capture_output=True, shell=True)
     file.write(output.stdout.decode())
 
 def console_file_log(txt, file):
