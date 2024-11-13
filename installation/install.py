@@ -1,6 +1,4 @@
-import os
 import subprocess
-import datetime
 from pathlib import Path
 
 
@@ -92,8 +90,8 @@ try:
     # authorization
     subprocess.run(f"sudo chown -R www-data:www-data {Path.cwd().parent}", shell=True)
     subprocess.run(f"sudo chmod -R 755 {Path.cwd().parent}", shell=True)
-    subprocess.run(f"sudo chmod o+x /home", shell=True)
-    subprocess.run(f"sudo chmod o+x /home/{os.getlogin()}", shell=True)
+    subprocess.run(f"sudo chmod o+x {Path.cwd().parent.parent.parent}", shell=True)
+    subprocess.run(f"sudo chmod o+x {Path.cwd().parent.parent}", shell=True)
 
     # SSL
     subprocess.run("sudo apt install python3-certbot-apache", shell=True)
