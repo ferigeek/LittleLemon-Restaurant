@@ -85,6 +85,7 @@ try:
         env.write("DATABASE_PASS="+db_password+'\n')
         env.write("DATABASE_HOST=127.0.0.1"+'\n')
         env.write("DATABASE_PORT=3306"+'\n')
+        env.write("SECRET_KEY="+secret_key+'\n')
     
     # authorization
     subprocess.run(f"sudo chown -R www-data:www-data {Path.cwd().parent}", shell=True)
