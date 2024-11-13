@@ -56,11 +56,11 @@ try:
             content[i] = "DEBUG = False\n"
             break
         elif line.strip().startswith("ALLOWED_HOSTS"):
-            content[i] = f"ALLOWED_HOSTS = [\'{domain}\']"
+            content[i] = f"ALLOWED_HOSTS = [\'{domain}\']\n"
             break
 
     security_settings = [
-        '\nCSRF_COOKIE_SECURE = True\n',
+        'CSRF_COOKIE_SECURE = True\n',
         'SESSION_COOKIE_SECURE = True\n',
         'SECURE_HSTS_SECONDS = 3600\n',  # Example value; adjust as needed
         'SECURE_SSL_REDIRECT = True\n'
@@ -79,12 +79,12 @@ try:
     db_password = input("Enter the database password: ")
 
     with open('../.env', '+a') as env:
-        env.write("DATABASE_ENGINE=django.db.backends.mysql")
-        env.write("DATABASE_NAME="+db_name)
-        env.write("DATABASE_USER="+db_username)
-        env.write("DATABASE_PASS="+db_password)
-        env.write("DATABASE_HOST=127.0.0.1")
-        env.write("DATABASE_PORT=3306")
+        env.write("DATABASE_ENGINE=django.db.backends.mysql\n")
+        env.write("DATABASE_NAME="+db_name+'\n')
+        env.write("DATABASE_USER="+db_username+'\n')
+        env.write("DATABASE_PASS="+db_password+'\n')
+        env.write("DATABASE_HOST=127.0.0.1"+'\n')
+        env.write("DATABASE_PORT=3306"+'\n')
     
     # authorization
     subprocess.run(f"sudo chown -R www-data:www-data {Path.cwd().parent}", shell=True)
