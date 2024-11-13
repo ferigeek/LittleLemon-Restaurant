@@ -60,7 +60,7 @@ try:
             break
 
     security_settings = [
-        'CSRF_COOKIE_SECURE = True\n',
+        '\nCSRF_COOKIE_SECURE = True\n',
         'SESSION_COOKIE_SECURE = True\n',
         'SECURE_HSTS_SECONDS = 3600\n',  # Example value; adjust as needed
         'SECURE_SSL_REDIRECT = True\n'
