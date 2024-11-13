@@ -56,7 +56,7 @@ try:
             content[i] = "DEBUG = False\n"
             break
         elif line.strip().startswith("ALLOWED_HOSTS"):
-            content[i] = f"ALLOWED_HOSTS = [{domain}]"
+            content[i] = f"ALLOWED_HOSTS = [\'{domain}\']"
             break
 
     security_settings = [
