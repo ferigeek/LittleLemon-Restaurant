@@ -93,12 +93,15 @@ try:
     subprocess.run(f"sudo chmod o+x {Path.cwd().parent.parent.parent}", shell=True)
     subprocess.run(f"sudo chmod o+x {Path.cwd().parent.parent}", shell=True)
 
+    subprocess.run("sudo a2ensite littlelemon.conf", shell=True) 
+    subprocess.run("sudo systemctl restart apache2", shell=True)
+
     # SSL
     subprocess.run("sudo apt install python3-certbot-apache -y", shell=True)
-    if alias is not None:
-        subprocess.run(f"sudo certbot --apache -d {domain} -d {alias}", shell=True)
-    else:
+    if alias == None:
         subprocess.run(f"sudo certbot --apache -d {domain}", shell=True)
+    else:
+        subprocess.run(f"sudo certbot --apache -d {domain} -d {alias}", shell=True)
 
     mysql_commands = (
         f"CREATE USER '{db_username}'@'localhost' IDENTIFIED BY '{db_password}';"
