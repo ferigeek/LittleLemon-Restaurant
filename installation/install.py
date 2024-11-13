@@ -21,7 +21,7 @@ try:
     alias = input("Enter the alias for your domain (Just press enter if you don't want any): ")
     
     # Virtual environment creation
-    subprocess.run("cd .. && python3 -m venv env && source ./env/bin/activate && pip install -r req.txt")
+    subprocess.run("cd .. && python3 -m venv env && source ./env/bin/activate && pip install -r req.txt", shell=True)
 
     # Apache Configuration
     print("Creating apache config ...")
@@ -84,22 +84,22 @@ try:
         env.write("DATABASE_PORT=3306")
     
     # authorization
-    subprocess.run(f"sudo chown -R www-data:www-data {Path.cwd().parent}")
-    subprocess.run(f"sudo chmod -R 755 {Path.cwd().parent}")
-    subprocess.run(f"sudo chmod o+x /home")
-    subprocess.run(f"sudo chmod o+x /home/{os.getlogin()}")
+    subprocess.run(f"sudo chown -R www-data:www-data {Path.cwd().parent}", shell=True)
+    subprocess.run(f"sudo chmod -R 755 {Path.cwd().parent}", shell=True)
+    subprocess.run(f"sudo chmod o+x /home", shell=True)
+    subprocess.run(f"sudo chmod o+x /home/{os.getlogin()}", shell=True)
 
     # SSL
-    subprocess.run("sudo apt install python3-certbot-apache")
-    subprocess.run(f"sudo certbot --apache -d {domain} -d {alias}")
+    subprocess.run("sudo apt install python3-certbot-apache", shell=True)
+    subprocess.run(f"sudo certbot --apache -d {domain} -d {alias}", shell=True)
 
-    subprocess.run("sudo mysql_secure_installation")
+    subprocess.run("sudo mysql_secure_installation", shell=True)
     subprocess.run(f"mysql -u root -p && CREATE USER \'{db_username}\'@\'localhost\' IDENTIFIED BY \'{db_password}\';\
                 && CREATE DATABASE {db_name}; && GRANT ALL PRIVILEGES ON {db_name}.* TO '{db_username}'@'localhost';\
-                    && FLUSH PRIVILEGES;")
+                    && FLUSH PRIVILEGES;", shell=True)
     
-    subprocess.run("sudo a2ensite littlelemon.conf")
-    subprocess.run("sudo systemctl restart apache2")
+    subprocess.run("sudo a2ensite littlelemon.conf", shell=True)
+    subprocess.run("sudo systemctl restart apache2", shell=True)
     print("Done!")
 except Exception as ex:
     print(ex)
