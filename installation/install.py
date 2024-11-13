@@ -28,47 +28,52 @@ try:
     print("Creating apache config ...")
 
     with open(r"/etc/apache2/sites-available/littlelemon.conf", 'w') as conf:
-        conf.write(r"<VirtualHost *:443>")
-        conf.write(f"\tServerName {domain}")
-        if alias == None:
-            conf.write(f"\tServerAlias {alias}")
-        conf.write(f"\nDocumentRoot {Path.cwd().parent}\n")
-        conf.write(f"\tWSGIDaemonProcess littlelemon python-path={Path.cwd().parent}:{Path.cwd().parent}/env/lib/python3.12/site-packages")
-        conf.write("\tWSGIProcessGroup littlelemon")
-        conf.write(f"\tWSGIScriptAlias / {Path.cwd().parent}/littlelemon/wsgi.py")
-        conf.write(f"\n\t<Directory {Path.cwd().parent}")
-        conf.write("\t\t<Files wsgi.py>\n\t\t\tRequire all granted\n\t\t</Files>\n</Directory>")
-        conf.write(f"\nAlias /static {Path.cwd().parent}/static")
-        conf.write(f"<Directory {Path.cwd().parent}/static>\n\t\tRequire all granted\n\t</Directory>")
-        conf.write(f"\nAlias /media {Path.cwd().parent}/media")
-        conf.write(f"<Directory {Path.cwd().parent}/media>\n\t\tRequire all granted\n\t</Directory>")
-        r_domain = str()
-        for i in range(len(domain), -1, -1):
-            if domain[i] == '.':
-                r_domain = domain[:i] + '\\' + domain[i:]
-                break
-        conf.write("RewriteEngine On\n" + r"RewriteCond %{HTTP_HOST} ^" + r_domain + " [NC]")
-        conf.write(r"RewriteRule ^(.*)$ https://" + domain + r"/$1 [L,R=301]")
-        conf.write(r"\nErrorLog ${APACHE_LOG_DIR}/error-littlelemon.log")
-        conf.wrtie(r"CustomLog ${APACHE_LOG_DIR}/access-littlelemon.log combined")
-        conf.write(r"</VirtualHost>")
-    content = list()
+        conf.write("<VirtualHost *:443>\n")
+        conf.write(f"\tServerName {domain}\n")
+        if alias is not None:
+            conf.write(f"\tServerAlias {alias}\n")
+        conf.write(f"DocumentRoot {Path.cwd().parent}\n")
+        conf.write(f"\tWSGIDaemonProcess littlelemon python-path={Path.cwd().parent}:{Path.cwd().parent}/env/lib/python3.12/site-packages\n")
+        conf.write("\tWSGIProcessGroup littlelemon\n")
+        conf.write(f"\tWSGIScriptAlias / {Path.cwd().parent}/littlelemon/wsgi.py\n")
+        conf.write(f"\n\t<Directory {Path.cwd().parent}>\n")
+        conf.write("\t\t<Files wsgi.py>\n\t\t\tRequire all granted\n\t\t</Files>\n\t</Directory>\n")
+        conf.write(f"\nAlias /static {Path.cwd().parent}/static\n")
+        conf.write(f"<Directory {Path.cwd().parent}/static>\n\tRequire all granted\n</Directory>\n")
+        conf.write(f"\nAlias /media {Path.cwd().parent}/media\n")
+        conf.write(f"<Directory {Path.cwd().parent}/media>\n\tRequire all granted\n</Directory>\n")
 
-    # settings.py
+        r_domain = domain.replace(".", "\\.", 1)
+        conf.write("RewriteEngine On\n")
+        conf.write(f"RewriteCond %{{HTTP_HOST}} ^{r_domain} [NC]\n")
+        conf.write(f"RewriteRule ^(.*)$ https://{domain}/$1 [L,R=301]\n")
+        conf.write("ErrorLog ${APACHE_LOG_DIR}/error-littlelemon.log\n")
+        conf.write("CustomLog ${APACHE_LOG_DIR}/access-littlelemon.log combined\n")
+        conf.write("</VirtualHost>\n")
+
+    # settings.py configuration
     print('Configuring settings.py ...')
-    with open('../littlelemon/settings.py', '+a') as settings:
-        settings.write('CSRF_COOKIE_SECURE = True')
-        settings.write('SESSION_COOKIE_SECURE = True')
-        settings.write('SECURE_HSTS_SECONDS = True')
-        settings.write('SECURE_SSL_REDIRECT = True')
+    settings_path = '../littlelemon/settings.py'
+    with open(settings_path, 'r') as settings:
         content = settings.readlines()
-        for i in range(len(content)):
-            if content[i] == "DEBUG = True":
-                content[i] = "DEBUG = False"
-                break
-    with open('../littlelemon/settings.py', 'w') as settings:
+
+    for i, line in enumerate(content):
+        if line.strip().startswith("DEBUG = True"):
+            content[i] = "DEBUG = False\n"
+            break
+
+    security_settings = [
+        'CSRF_COOKIE_SECURE = True\n',
+        'SESSION_COOKIE_SECURE = True\n',
+        'SECURE_HSTS_SECONDS = 3600\n',  # Example value; adjust as needed
+        'SECURE_SSL_REDIRECT = True\n'
+    ]
+
+    content.extend(security_settings)
+
+    with open(settings_path, 'w') as settings:
         settings.writelines(content)
-    
+
     # Environment variables
     print("Configuring environment variables ...")
     secret_key = input("Enter secret key for your application: ")
