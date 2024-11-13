@@ -41,10 +41,6 @@ try:
         conf.write(f"\nAlias /media {Path.cwd().parent}/media\n")
         conf.write(f"<Directory {Path.cwd().parent}/media>\n\tRequire all granted\n</Directory>\n")
 
-        r_domain = domain.replace(".", "\\.", 1)
-        conf.write("RewriteEngine On\n")
-        conf.write(f"RewriteCond %{{HTTP_HOST}} ^{r_domain} [NC]\n")
-        conf.write(f"RewriteRule ^(.*)$ https://{domain}/$1 [L,R=301]\n")
         conf.write("ErrorLog ${APACHE_LOG_DIR}/error-littlelemon.log\n")
         conf.write("CustomLog ${APACHE_LOG_DIR}/access-littlelemon.log combined\n")
         conf.write("</VirtualHost>\n")
