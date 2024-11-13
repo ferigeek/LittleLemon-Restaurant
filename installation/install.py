@@ -95,7 +95,10 @@ try:
 
     # SSL
     subprocess.run("sudo apt install python3-certbot-apache", shell=True)
-    subprocess.run(f"sudo certbot --apache -d {domain} -d {alias}", shell=True)
+    if alias is not None:
+        subprocess.run(f"sudo certbot --apache -d {domain} -d {alias}", shell=True)
+    else:
+        subprocess.run(f"sudo certbot --apache -d {domain}", shell=True)
 
     subprocess.run("sudo mysql_secure_installation", shell=True)
     subprocess.run(f"mysql -u root -p && CREATE USER \'{db_username}\'@\'localhost\' IDENTIFIED BY \'{db_password}\';\
